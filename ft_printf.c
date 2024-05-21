@@ -30,8 +30,6 @@ int	ft_parsing(va_list args, char c, int *len)
 		*len += ft_puthex(va_arg(args, unsigned int), 1);
 	else if (c == '%')
 		*len += ft_putchar('%');
-	// else
-	// 	*len += ft_putchar(c);
 	return (*len);
 }
 
