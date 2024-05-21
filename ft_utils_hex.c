@@ -1,62 +1,49 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_utils.c                                         :+:      :+:    :+:   */
+/*   ft_utils_hex.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pajimene <pajimene@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 19:58:59 by pajimene          #+#    #+#             */
-/*   Updated: 2024/05/21 15:13:59 by pajimene         ###   ########.fr       */
+/*   Updated: 2024/05/21 15:16:02 by pajimene         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-int	ft_putchar(char c)
-{
-	write(1, &c, 1);
-	return (1);
-}
-
-int	ft_putstr(char *str)
-{
-	int	i;
-	int	len;
-
-	if (!str)
-		return (ft_putstr("(null)"));
-	i = 0;
-	len = 0;
-	while (str[i])
-		len += ft_putchar(str[i++]);
-	return (len);
-}
-
-int	ft_putnbr(int n)
+int	ft_puthex(unsigned long n, int b)
 {
 	int		len;
-	long	nb;
+	char	*hexlow;
+	char	*hexup;
 
 	len = 0;
-	nb = (long)n;
-	if (nb < 0)
+	hexlow = "0123456789abcdef";
+	hexup = "0123456789ABCDEF";
+	if (b)
 	{
-		len += ft_putchar('-');
-		nb *= -1;
+		if (n > 15)
+			len += ft_puthex(n / 16, 1);
+	len += ft_putchar(hexup[n % 16]);
 	}
-	if (nb > 9)
-		len += ft_putnbr(nb / 10);
-	len += ft_putchar((nb % 10) + 48);
+	else
+	{
+		if (n > 15)
+			len += ft_puthex(n / 16, 0);
+		len += ft_putchar(hexlow[n % 16]);
+	}
 	return (len);
 }
 
-int	ft_putunbr(unsigned int n)
+int	ft_ptradd(unsigned long n)
 {
 	int	len;
 
 	len = 0;
-	if (n > 9)
-		len += ft_putnbr(n / 10);
-	len += ft_putchar((n % 10) + 48);
+	if (!n)
+		return (ft_putstr("(nil)"));
+	len += ft_putstr("0x");
+	len += ft_puthex(n, 0);
 	return (len);
 }
